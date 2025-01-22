@@ -14,8 +14,8 @@ function nuevaNota(){
 
 <template>
     <div class="cabecera">
-        <h1>Cabecera</h1>
-        <input type="text" placeholder="Nueva Nota" v-model="contenido" v-on:keyup.enter="nuevaNota">
+        <h1>Proyecto Vue.js -- Alejandro Cabrera</h1>
+        <input type="text" placeholder="¿Qué quieres recordar?" v-model="contenido" v-on:keyup.enter="nuevaNota">
     </div>
     
 </template>
@@ -31,5 +31,12 @@ function nuevaNota(){
   width: 100%;
   padding: 10px;
   margin-top: 10px;
+  border-radius: 9px;
 }
+
+input{
+  outline: none;
+  text-decoration: none;
+}
+
 </style>

@@ -83,45 +83,54 @@ function cambiarPrioridad({ posicion, nuevaPrioridad }) {
 </script>
 
 <template>
-  
   <div class="recordatorios">
-
-  
     <Cabecera v-on:nuevo="nuevaNota"></Cabecera>
-
+    
     <TareasPendientes :pendientes="listaTarea" v-on:eliminarAcabadas="eliminarAcabadas"></TareasPendientes>
   
-    <div class="listaTarea">
-
+    <transition-group name="list" tag="div" class="listaTarea">
+      <Tarea v-for="(tarea, posicion) in listaTarea" 
+        :key="tarea.id" 
+        :titulo="tarea.Titulo" 
+        :fecha="tarea.fechaCreacion" 
+        :posicion="posicion" 
+        :acabada="tarea.acabada" 
+        :prioridad="tarea.prioridad"
+        :usuario="tarea.usuario"
+        v-on:borrado="borrarTarea(posicion)" 
+        v-on:acabada="tareaFinalizada(posicion)"
+        v-on:cambiarPrioridad="cambiarPrioridad">
+      </Tarea>
+    </transition-group>
+  
     
-    <Tarea v-for="(tarea, posicion) in listaTarea" 
-    :key="posicion" 
-    :titulo="tarea.Titulo" 
-    :fecha="tarea.fechaCreacion" 
-    :posicion="posicion" 
-    :acabada="tarea.acabada" 
-    :prioridad="tarea.prioridad"
-    :usuario = "tarea.usuario"
-
-    v-on:borrado="borrarTarea(posicion)" 
-    v-on:acabada="tareaFinalizada(posicion)"
-    v-on:cambiarPrioridad="cambiarPrioridad">
-    </Tarea>
   </div>
-    <Pie></Pie>
-  </div>
+  <Pie></Pie>
 </template>
 
-<style scoped>
 
+<style scoped>
 .recordatorios {
   width: 50%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-color: #0d0d0e;
+  border-radius: 7px;
+  padding: 30px;
 }
 .listaTarea {
   width: 100%;
   margin: 20px 0;
 }
+
+.list-enter-active, .list-leave-active {
+  transition: all 0.5s ease;
+}
+
+.list-enter, .list-leave-to /* .list-leave-active in <2.1.8 */ {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
 </style>

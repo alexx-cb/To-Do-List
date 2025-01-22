@@ -1,8 +1,9 @@
 <script setup>
 import { getCurrentUser } from 'vuefire';
 import { useRouter } from 'vue-router';
+import { useCurrentUser } from 'vuefire';
 const router = useRouter();
-import Login from './components/Login.vue';
+const user = useCurrentUser();
 
 router.beforeEach(async(to, from) => {
   if(to.meta.requireAuth){
@@ -27,10 +28,11 @@ router.beforeEach(async(to, from) => {
 <div class="app">
 
 <nav>
-  <RouterLink to="/">Incio </RouterLink>
-  <RouterLink to="/recordatorios">Lista recordatorios</RouterLink>
+  <RouterLink to="/">Home</RouterLink>
+  <RouterLink v-if="user" to="/recordatorios">Tasks</RouterLink>
+  <RouterLink to="/login" v-if="!user">Log In</RouterLink>
+  <RouterLink to="/login" v-else>Your Sesion</RouterLink>
 </nav>
-<Login></Login>
 
 <RouterView></RouterView>
 </div>
@@ -46,5 +48,27 @@ router.beforeEach(async(to, from) => {
   height: 100%;
 }
 
+nav {
+  width: 25%;
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+  margin-top: 15px;
+  border-radius: 5px;
+  justify-content: space-around;
+}
+
+nav a {
+  text-decoration: none;
+  font-size: 18px;
+  padding: 10px 20px;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+  color: white;
+}
+
+nav a:hover {
+  background-color: #ddd;
+}
 
 </style>

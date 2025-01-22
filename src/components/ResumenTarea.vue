@@ -1,11 +1,21 @@
 <script setup>
 
-import { computed } from 'vue';
+
+import { computed, ref } from 'vue';
 const props = defineProps(["pendientes"]);
 const emits = defineEmits(["eliminarAcabadas"]);
 
+const TareaNumero = computed(()=>{
+  if(props.pendientes.filter( (tarea)=> !tarea.acabada).length<=1){
+    return TareaNumero.value = "Tarea";
+  }else{
+    return TareaNumero.value = "Tareas";
+  }
+});
+
 const numeroTareasPendientes = computed (()=>{
-    return props.pendientes.filter( (tarea)=> !tarea.acabada).length;
+  return props.pendientes.filter( (tarea)=> !tarea.acabada).length;
+    
 });
 
 const tareasTotales = computed(()=>{
@@ -22,7 +32,7 @@ function eliminarCompletadas() {
 <template>
   <div class="resumen-tarea">
     <hr>
-    <p>{{ numeroTareasPendientes }} tareas pendientes de {{ tareasTotales }} <button @click="eliminarCompletadas">Eliminar Terminadas</button></p>
+    <p>{{ numeroTareasPendientes }} {{ TareaNumero }} pendientes de {{ tareasTotales }} |<span @click="eliminarCompletadas"> × Eliminar tareas completadas</span></p>
     <hr>
   </div>
 </template>
@@ -42,8 +52,12 @@ p{
   font-size: 17px;
 }
 
-button{
-  padding: 5px;
+span{
+  color: #eca219;
+}
+span:hover{
+  cursor: pointer;
+  color: #b57b10;
 }
 
 hr{

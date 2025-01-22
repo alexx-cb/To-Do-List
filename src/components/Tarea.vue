@@ -47,7 +47,7 @@ const cambiarPrioridad = (nuevaPrioridad) => {
     <div class="header">
       <input class="rounded-checkbox" type="checkbox" @change="acabada" :checked="props.acabada">
       <h1 :class="{ tachado: props.acabada }" id="titulo">{{ titulo }}</h1>
-      <button class="borrar" @click="$emit('borrado')">Borrar</button>
+      <button class="borrar" @click="$emit('borrado')"><font-awesome-icon :icon="['fas', 'ban']"class="fa-2x" /></button>
     </div>
     
     <div id="cositas">
@@ -84,14 +84,16 @@ const cambiarPrioridad = (nuevaPrioridad) => {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  background-color: black;
+  background-color: #252425;
   display: flex;
   flex-direction: column;
+  
 }
 
 .header {
   display: flex;
   align-items: center;
+  color: white;
 }
 
 input[type="checkbox"] {
@@ -149,10 +151,12 @@ input[type="checkbox"]:checked::before {
 
 .borrar {
   position: absolute;
-  margin-left: 675px;
-  margin-top: 50px;
-  padding-top: 7px;
-  padding-bottom: 7px;
+  margin-left: 630px;
+  margin-top: 60px;
+  padding: 7px;
+  color: white;
+  background-color: red;
+  opacity: 1;
 }
 
 .fecha {
@@ -161,28 +165,32 @@ input[type="checkbox"]:checked::before {
 }
 
 button.active {
-  background-color: #4CAF50;
-  color: white;
   border-radius: 7px;
+  outline: none;
 }
 
 button.bajo.active {
   background-color: blue;
   color: white;
-
+  border: none;
 }
 
 button.medio.active{
   background-color: #4CAF50;
   color: white;
+  border: none;
 }
 
 button.alto.active{
   background-color: red;
   color: white;
+  border: none;
 }
 
 button:not(.active) {
   opacity: 0.6;
+  outline: none;
+  border: none;
+  border-radius: 7px;
 }
 </style>
