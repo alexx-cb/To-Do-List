@@ -1,10 +1,8 @@
 <script setup>
 import { getCurrentUser } from 'vuefire';
-import Login from './components/Login.vue';
-
-
 import { useRouter } from 'vue-router';
 const router = useRouter();
+import Login from './components/Login.vue';
 
 router.beforeEach(async(to, from) => {
   if(to.meta.requireAuth){
@@ -25,15 +23,28 @@ router.beforeEach(async(to, from) => {
 
 
 <template>
+  
+<div class="app">
 
+<nav>
+  <RouterLink to="/">Incio </RouterLink>
+  <RouterLink to="/recordatorios">Lista recordatorios</RouterLink>
+</nav>
 <Login></Login>
-<RouterLink to="/">Incio</RouterLink>
-<RouterLink to="/recordatorios">Lista recordatorios</RouterLink>
 
 <RouterView></RouterView>
-
+</div>
 </template>
 
 
 <style scoped>
+.app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+
 </style>

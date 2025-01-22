@@ -1,5 +1,11 @@
 import { initializeApp } from 'firebase/app'
 import { getFirestore} from 'firebase/firestore'
+import { getAuth, GithubAuthProvider, signInWithPopup } from 'firebase/auth';
+
+
+
+
+
 // ... other firebase imports
 
 export const firebaseApp = initializeApp({
@@ -13,6 +19,9 @@ export const firebaseApp = initializeApp({
     appId: "1:357066239918:web:603fefeff23d728b4ba23f",
     measurementId: "G-QML04LB5ZL"
 })
+const authGit = getAuth(firebaseApp);
+const provider = new GithubAuthProvider();
 
 // used for the firestore refs
 const db = getFirestore(firebaseApp)
+export { authGit, provider };

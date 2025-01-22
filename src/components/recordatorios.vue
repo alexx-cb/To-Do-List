@@ -3,44 +3,22 @@ import Tarea from './Tarea.vue';
 import Cabecera from './Cabecera.vue';
 import TareasPendientes from './ResumenTarea.vue';
 import Pie from './Pie.vue';
-import { useCollection, useCurrentUser, useFirebaseAuth, useFirestore } from 'vuefire'
+import { useCollection, useCurrentUser, useFirestore } from 'vuefire'
 import { collection, addDoc, orderBy , query, deleteDoc, doc, updateDoc, where} from 'firebase/firestore';
 
 
-import { onMounted, watch, computed } from 'vue';
-
-
 const db = useFirestore();
-const auth = useFirebaseAuth();
 const usuario = useCurrentUser();
 
-var listaTarea = useCollection(query(collection(db, 'Recordatorios'),where('usuario', '==', usuario.value.uid), orderBy("prioridad", "desc")));
-
-
-auth.onAuthStateChanged((user) => {
-  usuario.value = user;
-  if (user) {
-    listaTarea.value;
-  } else {
-    listaTarea.value= [];
-  }
-});
-
-
-onMounted(() => {
-    const tareasGuardadas = localStorage.getItem('listaTarea');
-    if (tareasGuardadas) {
-      listaTarea.value = JSON.parse(tareasGuardadas);
-    }
-});
-
-watch(listaTarea, (nuevaLista) => {
-    localStorage.setItem('listaTarea', JSON.stringify(nuevaLista));
-}, { deep: true });
-
+let listaTarea;
+if(usuario.value && usuario.value.email === "admin@gmail.com"){
+  listaTarea = useCollection(query(collection(db, 'Recordatorios'), orderBy("prioridad", "desc")));
+}else{
+  listaTarea = useCollection(query(collection(db, 'Recordatorios'), where('usuario', '==', usuario.value.email), orderBy("prioridad", "desc")));
+}
 
 function nuevaNota(texto){
-    console.log("recibe");
+    console.log("creada");
 
     let altaNueva ={
         Titulo: texto,
@@ -106,10 +84,16 @@ function cambiarPrioridad({ posicion, nuevaPrioridad }) {
 
 <template>
   
+  <div class="recordatorios">
+
+  
     <Cabecera v-on:nuevo="nuevaNota"></Cabecera>
 
     <TareasPendientes :pendientes="listaTarea" v-on:eliminarAcabadas="eliminarAcabadas"></TareasPendientes>
   
+    <div class="listaTarea">
+
+    
     <Tarea v-for="(tarea, posicion) in listaTarea" 
     :key="posicion" 
     :titulo="tarea.Titulo" 
@@ -123,10 +107,21 @@ function cambiarPrioridad({ posicion, nuevaPrioridad }) {
     v-on:acabada="tareaFinalizada(posicion)"
     v-on:cambiarPrioridad="cambiarPrioridad">
     </Tarea>
-
+  </div>
     <Pie></Pie>
-
+  </div>
 </template>
 
 <style scoped>
+
+.recordatorios {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.listaTarea {
+  width: 100%;
+  margin: 20px 0;
+}
 </style>
